@@ -191,6 +191,13 @@ const timelineData = [
   { time: "阶段 4", title: "工具插件复用与扩展", desc: "落地文件管理与消息发送平台，支撑业务快速扩展与低成本复用。" }
 ];
 
+const REPORT_MODE_KEY = "project_intro_report_mode";
+const EXPORT_MODE_KEY = "project_intro_export_mode";
+const COVER_META_KEY = "project_intro_cover_meta";
+
+let reportModeButton = null;
+let exportModeButton = null;
+
 function slugify(input) {
   return input.toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
@@ -202,6 +209,18 @@ function imageUrl(relPath) {
 function fileName(path) {
   const parts = path.split("/");
   return parts[parts.length - 1];
+}
+
+function getTodayISO() {
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${now.getFullYear()}-${month}-${day}`;
+}
+
+function formatDisplayDate(value) {
+  if (!value) return "";
+  return value.replace(/-/g, ".");
 }
 
 function getAllImageCount(system) {
@@ -238,12 +257,22 @@ function renderNav() {
     nav.appendChild(link);
   });
 
+  const dropdown = document.createElement("details");
+  dropdown.className = "system-nav-dropdown";
+  const summary = document.createElement("summary");
+  summary.textContent = "系统导航";
+  dropdown.appendChild(summary);
+
+  const menu = document.createElement("div");
+  menu.className = "system-nav-dropdown-menu";
   systemsData.forEach((system) => {
     const link = document.createElement("a");
     link.href = `#${getSectionId(system)}`;
     link.textContent = system.title;
-    nav.appendChild(link);
+    menu.appendChild(link);
   });
+  dropdown.appendChild(menu);
+  nav.appendChild(dropdown);
 }
 
 function renderValue() {
@@ -424,11 +453,24 @@ function bindLightbox() {
 
 function bindBackToTop() {
   const btn = document.getElementById("backToTop");
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 320) btn.classList.add("show");
+  if (!(btn instanceof HTMLButtonElement)) return;
+
+  const updateVisibility = () => {
+    const threshold = Math.max(260, window.innerHeight * 0.6);
+    if (window.scrollY > threshold) btn.classList.add("show");
     else btn.classList.remove("show");
+  };
+
+  updateVisibility();
+  window.addEventListener("scroll", () => {
+    updateVisibility();
   });
-  btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  window.addEventListener("resize", updateVisibility);
+  btn.addEventListener("click", () => {
+    btn.classList.add("is-jumping");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.setTimeout(() => btn.classList.remove("is-jumping"), 440);
+  });
 }
 
 function bindNavActive() {
@@ -463,30 +505,156 @@ function bindMobileNav() {
   toggle.addEventListener("click", () => nav.classList.toggle("open"));
   nav.addEventListener("click", (event) => {
     const target = event.target;
-    if (target instanceof HTMLAnchorElement) nav.classList.remove("open");
+    if (target instanceof HTMLAnchorElement) {
+      nav.classList.remove("open");
+      const dropdown = nav.querySelector(".system-nav-dropdown");
+      if (dropdown instanceof HTMLDetailsElement) dropdown.open = false;
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+    if (event.target.closest(".system-nav-dropdown")) return;
+    const dropdown = nav.querySelector(".system-nav-dropdown");
+    if (dropdown instanceof HTMLDetailsElement) dropdown.open = false;
+  });
+}
+
+function bindCoverMeta() {
+  const projectInput = document.getElementById("coverProject");
+  const presenterInput = document.getElementById("coverPresenter");
+  const dateInput = document.getElementById("coverDate");
+  const versionInput = document.getElementById("coverVersion");
+  const saveBtn = document.getElementById("coverSaveBtn");
+
+  const displayProject = document.getElementById("coverDisplayProject");
+  const displayPresenter = document.getElementById("coverDisplayPresenter");
+  const displayDate = document.getElementById("coverDisplayDate");
+  const displayVersion = document.getElementById("coverDisplayVersion");
+
+  if (
+    !(projectInput instanceof HTMLInputElement) ||
+    !(presenterInput instanceof HTMLInputElement) ||
+    !(dateInput instanceof HTMLInputElement) ||
+    !(versionInput instanceof HTMLInputElement) ||
+    !(saveBtn instanceof HTMLButtonElement)
+  ) {
+    return;
+  }
+
+  const defaults = {
+    project: "统一平台能力全景介绍",
+    presenter: "项目团队",
+    date: getTodayISO(),
+    version: "v1.0"
+  };
+
+  let saved = {};
+  try {
+    saved = JSON.parse(window.localStorage.getItem(COVER_META_KEY) || "{}");
+  } catch {
+    saved = {};
+  }
+
+  const model = {
+    project: saved.project || defaults.project,
+    presenter: saved.presenter || defaults.presenter,
+    date: saved.date || defaults.date,
+    version: saved.version || defaults.version
+  };
+
+  const render = () => {
+    projectInput.value = model.project;
+    presenterInput.value = model.presenter;
+    dateInput.value = model.date;
+    versionInput.value = model.version;
+    if (displayProject) displayProject.textContent = model.project;
+    if (displayPresenter) displayPresenter.textContent = model.presenter;
+    if (displayDate) displayDate.textContent = formatDisplayDate(model.date);
+    if (displayVersion) displayVersion.textContent = model.version;
+  };
+
+  const persist = () => {
+    window.localStorage.setItem(COVER_META_KEY, JSON.stringify(model));
+  };
+
+  render();
+
+  saveBtn.addEventListener("click", () => {
+    model.project = projectInput.value.trim() || defaults.project;
+    model.presenter = presenterInput.value.trim() || defaults.presenter;
+    model.date = dateInput.value || defaults.date;
+    model.version = versionInput.value.trim() || defaults.version;
+    persist();
+    render();
+    saveBtn.textContent = "已保存";
+    window.setTimeout(() => {
+      saveBtn.textContent = "保存封面信息";
+    }, 1300);
   });
 }
 
 function bindReportMode() {
-  const key = "project_intro_report_mode";
-  const btn = document.getElementById("reportModeToggle");
-  if (!btn) return;
+  reportModeButton = document.getElementById("reportModeToggle");
+  if (!reportModeButton) return;
 
-  const applyMode = (isOn) => {
+  const applyMode = (isOn, persist = true) => {
     document.body.classList.toggle("report-mode", isOn);
-    btn.classList.toggle("is-on", isOn);
-    btn.textContent = `领导汇报模式：${isOn ? "开" : "关"}`;
-    btn.setAttribute("aria-pressed", String(isOn));
+    reportModeButton.classList.toggle("is-on", isOn);
+    reportModeButton.textContent = `汇报模式：${isOn ? "开" : "关"}`;
+    reportModeButton.setAttribute("aria-pressed", String(isOn));
+    if (persist) window.localStorage.setItem(REPORT_MODE_KEY, isOn ? "1" : "0");
   };
 
-  const cached = window.localStorage.getItem(key) === "1";
-  applyMode(cached);
+  window.__applyReportMode = applyMode;
+  const cached = window.localStorage.getItem(REPORT_MODE_KEY) === "1";
+  applyMode(cached, false);
 
-  btn.addEventListener("click", () => {
+  reportModeButton.addEventListener("click", () => {
     const nowOn = !document.body.classList.contains("report-mode");
-    applyMode(nowOn);
-    window.localStorage.setItem(key, nowOn ? "1" : "0");
+    applyMode(nowOn, true);
   });
+}
+
+function bindExportMode() {
+  exportModeButton = document.getElementById("exportModeToggle");
+  const printBtn = document.getElementById("printPdfBtn");
+  if (!exportModeButton) return;
+
+  const applyExportMode = (isOn, persist = true) => {
+    document.body.classList.toggle("export-mode", isOn);
+    exportModeButton.classList.toggle("is-on", isOn);
+    exportModeButton.textContent = `导出版式：${isOn ? "开" : "关"}`;
+    exportModeButton.setAttribute("aria-pressed", String(isOn));
+    if (persist) window.localStorage.setItem(EXPORT_MODE_KEY, isOn ? "1" : "0");
+
+    const applyReportMode = window.__applyReportMode;
+    if (typeof applyReportMode === "function") {
+      if (isOn) {
+        applyReportMode(true, false);
+      } else {
+        const reportCached = window.localStorage.getItem(REPORT_MODE_KEY) === "1";
+        applyReportMode(reportCached, false);
+      }
+    }
+  };
+
+  const cached = window.localStorage.getItem(EXPORT_MODE_KEY) === "1";
+  applyExportMode(cached, false);
+
+  exportModeButton.addEventListener("click", () => {
+    const nowOn = !document.body.classList.contains("export-mode");
+    applyExportMode(nowOn, true);
+  });
+
+  if (printBtn) {
+    printBtn.addEventListener("click", () => {
+      if (!document.body.classList.contains("export-mode")) {
+        applyExportMode(true, true);
+      }
+      window.print();
+    });
+  }
 }
 
 function bootstrap() {
@@ -500,7 +668,9 @@ function bootstrap() {
   bindBackToTop();
   bindNavActive();
   bindMobileNav();
+  bindCoverMeta();
   bindReportMode();
+  bindExportMode();
 }
 
 bootstrap();

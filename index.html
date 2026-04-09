@@ -9,17 +9,33 @@
 </head>
 <body>
   <header class="site-header" id="top">
-    <div class="container header-inner">
+    <div class="container header-top">
       <a href="#top" class="brand">项目介绍系统</a>
       <div class="header-actions">
-        <button class="report-toggle" id="reportModeToggle" aria-pressed="false">领导汇报模式：关</button>
-        <button class="nav-toggle" id="navToggle" aria-label="切换导航">菜单</button>
+        <button class="report-toggle" id="reportModeToggle" aria-pressed="false">汇报模式：关</button>
+        <button class="export-toggle" id="exportModeToggle" aria-pressed="false">导出版式：关</button>
+        <button class="print-btn" id="printPdfBtn" aria-label="打印或导出PDF">打印/PDF</button>
+        <button class="nav-toggle" id="navToggle" aria-label="切换导航">导航</button>
       </div>
+    </div>
+    <div class="container nav-row">
       <nav class="top-nav" id="topNav"></nav>
     </div>
   </header>
 
   <main>
+    <section class="cover-sheet" id="coverSheet" aria-label="汇报封面">
+      <div class="container cover-sheet-inner">
+        <p class="cover-kicker">PROJECT BRIEFING</p>
+        <h1 id="coverDisplayProject">统一平台能力全景介绍</h1>
+        <div class="cover-meta">
+          <p>汇报人：<span id="coverDisplayPresenter">项目团队</span></p>
+          <p>日期：<span id="coverDisplayDate"></span></p>
+          <p>版本：<span id="coverDisplayVersion">v1.0</span></p>
+        </div>
+      </div>
+    </section>
+
     <section class="hero">
       <div class="container hero-inner">
         <p class="eyebrow">Project Introduction</p>
@@ -29,6 +45,16 @@
           通过截图与场景说明展示平台的业务覆盖与落地价值。
         </p>
         <a href="#systems" class="hero-cta">查看系统介绍</a>
+        <div class="cover-editor" id="coverEditor">
+          <h3>封面信息编辑</h3>
+          <div class="cover-form-grid">
+            <label>项目名称<input id="coverProject" type="text" placeholder="请输入项目名称"></label>
+            <label>汇报人<input id="coverPresenter" type="text" placeholder="请输入汇报人"></label>
+            <label>日期<input id="coverDate" type="date"></label>
+            <label>版本号<input id="coverVersion" type="text" placeholder="如 v1.0"></label>
+          </div>
+          <button id="coverSaveBtn" class="cover-save-btn">保存封面信息</button>
+        </div>
       </div>
     </section>
 
@@ -68,7 +94,10 @@
     </section>
   </main>
 
-  <button id="backToTop" class="back-to-top" aria-label="回到顶部">↑</button>
+  <button id="backToTop" class="back-to-top" aria-label="回到顶部" title="回到顶部">
+    <span aria-hidden="true">↑</span>
+    <span>顶部</span>
+  </button>
 
   <footer class="site-footer">
     <div class="container">
