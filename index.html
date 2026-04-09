@@ -11,7 +11,10 @@
   <header class="site-header" id="top">
     <div class="container header-inner">
       <a href="#top" class="brand">项目介绍系统</a>
-      <button class="nav-toggle" id="navToggle" aria-label="切换导航">菜单</button>
+      <div class="header-actions">
+        <button class="report-toggle" id="reportModeToggle" aria-pressed="false">领导汇报模式：关</button>
+        <button class="nav-toggle" id="navToggle" aria-label="切换导航">菜单</button>
+      </div>
       <nav class="top-nav" id="topNav"></nav>
     </div>
   </header>
@@ -29,10 +32,31 @@
       </div>
     </section>
 
-    <section class="overview">
+    <section class="value-section" id="value">
+      <div class="container">
+        <h2>业务价值</h2>
+        <div class="value-grid" id="valueGrid"></div>
+      </div>
+    </section>
+
+    <section class="overview" id="overview">
       <div class="container">
         <h2>系统总览</h2>
         <div class="overview-grid" id="overviewGrid"></div>
+      </div>
+    </section>
+
+    <section class="relation-section" id="relation">
+      <div class="container">
+        <h2>系统关系图</h2>
+        <div class="relation-board" id="relationBoard"></div>
+      </div>
+    </section>
+
+    <section class="timeline-section" id="timeline">
+      <div class="container">
+        <h2>建设里程碑</h2>
+        <div class="timeline" id="timelineContainer"></div>
       </div>
     </section>
 

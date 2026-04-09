@@ -166,6 +166,31 @@ const copyMap = {
   }
 };
 
+const valueMetrics = [
+  { value: "6+", label: "核心系统覆盖" },
+  { value: "70+", label: "关键页面截图" },
+  { value: "2", label: "通用插件能力中心" },
+  { value: "1", label: "统一身份入口" },
+  { value: "100%", label: "静态可部署交付" }
+];
+
+const relationModel = {
+  core: "统一数字化平台",
+  layers: [
+    { title: "底座能力层", tags: ["SSO单点登录", "权限管理", "组织角色体系"] },
+    { title: "业务应用层", tags: ["产品销售", "设备管理", "智能访客", "知识问答"] },
+    { title: "支撑服务层", tags: ["文件管理", "消息发送平台", "日志追踪"] }
+  ],
+  flow: "统一身份认证 -> 业务应用协同 -> 插件服务复用 -> 数据沉淀与持续优化"
+};
+
+const timelineData = [
+  { time: "阶段 1", title: "统一身份与权限体系建设", desc: "完成多系统统一登录与角色权限控制，建立平台账号治理基础。" },
+  { time: "阶段 2", title: "核心业务系统接入", desc: "产品销售、设备管理、智能访客等系统完成平台化接入和联动。" },
+  { time: "阶段 3", title: "知识与智能能力升级", desc: "上线知识问答与统计看板，形成检索增强与运营分析能力。" },
+  { time: "阶段 4", title: "工具插件复用与扩展", desc: "落地文件管理与消息发送平台，支撑业务快速扩展与低成本复用。" }
+];
+
 function slugify(input) {
   return input.toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
@@ -184,17 +209,50 @@ function getAllImageCount(system) {
   return system.images.length + moduleCount;
 }
 
+function getPrimaryImage(system) {
+  if (system.images.length > 0) return system.images[0];
+  for (const mod of system.modules) {
+    if (mod.images.length > 0) return mod.images[0];
+  }
+  return null;
+}
+
 function getSectionId(system) {
   return `sys-${slugify(system.title)}`;
 }
 
 function renderNav() {
   const nav = document.getElementById("topNav");
+  const fixedLinks = [
+    { id: "value", text: "业务价值" },
+    { id: "overview", text: "系统总览" },
+    { id: "relation", text: "系统关系图" },
+    { id: "timeline", text: "建设里程碑" },
+    { id: "systems", text: "系统详情" }
+  ];
+
+  fixedLinks.forEach((item) => {
+    const link = document.createElement("a");
+    link.href = `#${item.id}`;
+    link.textContent = item.text;
+    nav.appendChild(link);
+  });
+
   systemsData.forEach((system) => {
     const link = document.createElement("a");
     link.href = `#${getSectionId(system)}`;
     link.textContent = system.title;
     nav.appendChild(link);
+  });
+}
+
+function renderValue() {
+  const grid = document.getElementById("valueGrid");
+  valueMetrics.forEach((metric) => {
+    const card = document.createElement("article");
+    card.className = "value-card";
+    card.innerHTML = `<strong>${metric.value}</strong><span>${metric.label}</span>`;
+    grid.appendChild(card);
   });
 }
 
@@ -211,6 +269,41 @@ function renderOverview() {
       <p class="overview-meta">${imgCount} 张截图证据</p>
     `;
     grid.appendChild(card);
+  });
+}
+
+function renderRelation() {
+  const wrap = document.getElementById("relationBoard");
+  const layerHtml = relationModel.layers
+    .map((layer) => {
+      const tags = layer.tags.map((tag) => `<span class="relation-tag">${tag}</span>`).join("");
+      return `
+        <article class="relation-column">
+          <h3>${layer.title}</h3>
+          <div class="relation-tags">${tags}</div>
+        </article>
+      `;
+    })
+    .join("");
+
+  wrap.innerHTML = `
+    <div class="relation-core">${relationModel.core}</div>
+    <div class="relation-layers">${layerHtml}</div>
+    <p class="relation-flow">${relationModel.flow}</p>
+  `;
+}
+
+function renderTimeline() {
+  const wrap = document.getElementById("timelineContainer");
+  timelineData.forEach((item) => {
+    const node = document.createElement("article");
+    node.className = "timeline-item";
+    node.innerHTML = `
+      <div class="timeline-time">${item.time}</div>
+      <p class="timeline-title">${item.title}</p>
+      <p class="timeline-desc">${item.desc}</p>
+    `;
+    wrap.appendChild(node);
   });
 }
 
@@ -261,6 +354,17 @@ function renderSystems() {
         </div>
       </div>
     `;
+
+    const primaryImage = getPrimaryImage(system);
+    if (primaryImage) {
+      const keyShot = document.createElement("figure");
+      keyShot.className = "key-shot";
+      keyShot.innerHTML = `
+        <img src="${imageUrl(primaryImage)}" alt="${system.title} 关键主图" data-caption="${system.title} · 关键主图">
+        <p>关键主图（汇报模式展示）</p>
+      `;
+      article.appendChild(keyShot);
+    }
 
     article.appendChild(renderFeatureList(cfg.features));
 
@@ -328,7 +432,12 @@ function bindBackToTop() {
 }
 
 function bindNavActive() {
-  const sections = [...document.querySelectorAll(".system-section")];
+  const sections = [
+    ...["value", "overview", "relation", "timeline", "systems"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean),
+    ...document.querySelectorAll(".system-section")
+  ];
   const links = [...document.querySelectorAll(".top-nav a")];
   const sectionById = new Map(sections.map((sec) => [sec.id, sec]));
 
@@ -358,14 +467,40 @@ function bindMobileNav() {
   });
 }
 
+function bindReportMode() {
+  const key = "project_intro_report_mode";
+  const btn = document.getElementById("reportModeToggle");
+  if (!btn) return;
+
+  const applyMode = (isOn) => {
+    document.body.classList.toggle("report-mode", isOn);
+    btn.classList.toggle("is-on", isOn);
+    btn.textContent = `领导汇报模式：${isOn ? "开" : "关"}`;
+    btn.setAttribute("aria-pressed", String(isOn));
+  };
+
+  const cached = window.localStorage.getItem(key) === "1";
+  applyMode(cached);
+
+  btn.addEventListener("click", () => {
+    const nowOn = !document.body.classList.contains("report-mode");
+    applyMode(nowOn);
+    window.localStorage.setItem(key, nowOn ? "1" : "0");
+  });
+}
+
 function bootstrap() {
   renderNav();
+  renderValue();
   renderOverview();
+  renderRelation();
+  renderTimeline();
   renderSystems();
   bindLightbox();
   bindBackToTop();
   bindNavActive();
   bindMobileNav();
+  bindReportMode();
 }
 
 bootstrap();
