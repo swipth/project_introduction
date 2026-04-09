@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>项目介绍系统</title>
+  <meta name="description" content="基于多系统截图生成的项目介绍页面，支持导航、分系统展示与截图画廊。">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a href="#top" class="brand">项目介绍系统</a>
+      <button class="nav-toggle" id="navToggle" aria-label="切换导航">菜单</button>
+      <nav class="top-nav" id="topNav"></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="eyebrow">Project Introduction</p>
+        <h1>统一平台能力全景</h1>
+        <p class="hero-text">
+          页面聚合单点登录、销售、设备、访客、知识问答与工具插件等系统能力，
+          通过截图与场景说明展示平台的业务覆盖与落地价值。
+        </p>
+        <a href="#systems" class="hero-cta">查看系统介绍</a>
+      </div>
+    </section>
+
+    <section class="overview">
+      <div class="container">
+        <h2>系统总览</h2>
+        <div class="overview-grid" id="overviewGrid"></div>
+      </div>
+    </section>
+
+    <section class="systems" id="systems">
+      <div class="container">
+        <h2>系统详情</h2>
+        <div id="systemsContainer"></div>
+      </div>
+    </section>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="回到顶部">↑</button>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 项目介绍系统 · 静态 HTML 可直接部署</p>
+    </div>
+  </footer>
+
+  <div id="lightbox" class="lightbox hidden" aria-hidden="true">
+    <button id="lightboxClose" class="lightbox-close" aria-label="关闭">×</button>
+    <img id="lightboxImg" src="" alt="系统截图放大图">
+    <p id="lightboxCaption"></p>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
