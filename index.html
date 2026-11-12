@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>项目介绍系统</title>
-  <meta name="description" content="基于多系统截图生成的项目介绍页面，支持导航、分系统展示与截图画廊。">
+  <title>企业数字化平台与千寻智能体</title>
+  <meta name="description" content="面向高层汇报的企业数字化平台介绍，涵盖千寻智能体、统一身份认证与各业务系统架构。">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -27,7 +27,7 @@
     <section class="cover-sheet" id="coverSheet" aria-label="汇报封面">
       <div class="container cover-sheet-inner">
         <p class="cover-kicker">PROJECT BRIEFING</p>
-        <h1 id="coverDisplayProject">统一平台能力全景介绍</h1>
+        <h1 id="coverDisplayProject">企业数字化平台与千寻智能体汇报</h1>
         <div class="cover-meta">
           <p>汇报人：<span id="coverDisplayPresenter">项目团队</span></p>
           <p>日期：<span id="coverDisplayDate"></span></p>
@@ -38,15 +38,15 @@
 
     <section class="hero">
       <div class="container hero-inner">
-        <p class="eyebrow">Project Introduction</p>
-        <h1>统一平台能力全景</h1>
+        <p class="eyebrow">Executive Briefing</p>
+        <h1>企业数字化平台 · 千寻智能体</h1>
         <p class="hero-text">
-          页面聚合单点登录、销售、设备、访客、知识问答与工具插件等系统能力，
-          通过截图与场景说明展示平台的业务覆盖与落地价值。
+          千寻把市场洞察、经营问数和知识库收进同一套工作台，企业微信和网页共用。
+          销售、设备、访客、问答与文件消息仍走统一登录和网关。下面按系统给出架构和界面。
         </p>
-        <a href="#systems" class="hero-cta">查看系统介绍</a>
-        <div class="cover-editor" id="coverEditor">
-          <h3>封面信息编辑</h3>
+        <a href="#sys-千寻智能体平台" class="hero-cta">先看千寻</a>
+        <details class="cover-editor" id="coverEditor">
+          <summary>编辑封面</summary>
           <div class="cover-form-grid">
             <label>项目名称<input id="coverProject" type="text" placeholder="请输入项目名称"></label>
             <label>汇报人<input id="coverPresenter" type="text" placeholder="请输入汇报人"></label>
@@ -54,7 +54,7 @@
             <label>版本号<input id="coverVersion" type="text" placeholder="如 v1.0"></label>
           </div>
           <button id="coverSaveBtn" class="cover-save-btn">保存封面信息</button>
-        </div>
+        </details>
       </div>
     </section>
 

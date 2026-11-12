@@ -1,12 +1,13 @@
 :root {
-  --bg: #f5f7fb;
+  --bg: #eef2f7;
   --panel: #ffffff;
-  --line: #e5eaf2;
-  --text: #1f2937;
-  --text-soft: #556070;
-  --primary: #2457d6;
-  --primary-soft: #e9f0ff;
-  --shadow: 0 10px 28px rgba(25, 50, 100, 0.08);
+  --line: #e3e9f2;
+  --text: #142033;
+  --text-soft: #5c6b80;
+  --primary: #1d4e89;
+  --primary-soft: #e8f0f8;
+  --gold: #8a6a2f;
+  --shadow: 0 16px 40px rgba(16, 35, 63, 0.08);
 }
 
 * {
@@ -26,7 +27,7 @@ body {
 }
 
 .container {
-  width: min(1160px, 92vw);
+  width: min(1240px, 94vw);
   margin: 0 auto;
 }
 
@@ -196,9 +197,11 @@ body {
 }
 
 .hero {
-  background: linear-gradient(135deg, #0f2f7f 0%, #2457d6 52%, #4d83ff 100%);
+  background:
+    radial-gradient(900px 320px at 88% 0%, rgba(212, 175, 95, 0.22), transparent 60%),
+    linear-gradient(145deg, #071426 0%, #10284f 48%, #1a4f8b 100%);
   color: #ffffff;
-  padding: 5rem 0 4rem;
+  padding: 5.2rem 0 4.2rem;
 }
 
 .hero-inner {
@@ -207,9 +210,11 @@ body {
 
 .eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  opacity: 0.82;
+  letter-spacing: 0.16em;
+  color: #e6d3a1;
+  opacity: 1;
   margin: 0;
+  font-size: 0.78rem;
 }
 
 h1, h2, h3 {
@@ -234,25 +239,31 @@ h2 {
 
 .hero-cta {
   display: inline-block;
-  background: #ffffff;
-  color: #1d3d97;
+  background: #f4e7c8;
+  color: #1a2740;
   text-decoration: none;
   font-weight: 600;
-  padding: 0.62rem 1rem;
-  border-radius: 10px;
+  padding: 0.68rem 1.15rem;
+  border-radius: 999px;
 }
 
 .cover-editor {
-  margin-top: 1.1rem;
-  padding: 0.95rem;
-  border: 1px solid rgba(255, 255, 255, 0.34);
+  margin-top: 1.4rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
 }
 
-.cover-editor h3 {
-  font-size: 1rem;
-  margin-bottom: 0.6rem;
+.cover-editor summary {
+  cursor: pointer;
+  color: #e6d3a1;
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+}
+
+.cover-editor[open] summary {
+  margin-bottom: 0.7rem;
 }
 
 .cover-form-grid {
@@ -357,7 +368,7 @@ h2 {
   display: block;
   font-size: 1.6rem;
   line-height: 1.2;
-  color: #163eae;
+  color: #14345c;
 }
 
 .value-card span {
@@ -374,9 +385,28 @@ h2 {
 .overview-card {
   background: var(--panel);
   border: 1px solid var(--line);
+  border-top: 3px solid #1d4e89;
   border-radius: 14px;
   padding: 1rem;
   box-shadow: var(--shadow);
+}
+
+.overview-card.is-flagship {
+  border-top-color: #8a6a2f;
+  background: linear-gradient(180deg, #fffaf0 0%, #ffffff 42%);
+}
+
+.overview-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.overview-desc {
+  margin: 0.35rem 0 0.7rem;
+  color: var(--text-soft);
+  font-size: 0.9rem;
 }
 
 .overview-card h3 {
@@ -394,9 +424,16 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 16px;
   box-shadow: var(--shadow);
-  padding: 1.2rem;
+  padding: 1.35rem 1.35rem 1.2rem;
   margin-bottom: 1.2rem;
   scroll-margin-top: 90px;
+}
+
+.system-section.is-flagship {
+  border-color: #e4d3a8;
+  background:
+    linear-gradient(180deg, rgba(244, 231, 200, 0.35), rgba(255, 255, 255, 0) 120px),
+    #ffffff;
 }
 
 .section-head {
@@ -440,6 +477,48 @@ h2 {
   background: #fbfcff;
   border-radius: 8px;
   padding: 0.3rem 0.55rem;
+}
+
+.arch-panel {
+  margin: 0.2rem 0 1.1rem;
+  padding: 0.9rem;
+  border-radius: 14px;
+  background: #f6f8fb;
+  border: 1px solid #e4ebf5;
+}
+
+.arch-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.arch-head h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.arch-head span {
+  color: var(--gold);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+}
+
+.arch-panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: zoom-in;
+}
+
+.arch-panel figcaption {
+  margin: 0.5rem 0 0;
+  color: var(--text-soft);
+  font-size: 0.9rem;
 }
 
 .module-block {
@@ -598,9 +677,18 @@ h2 {
 .gallery img {
   display: block;
   width: 100%;
-  height: 146px;
-  object-fit: cover;
+  height: 168px;
+  object-fit: contain;
+  background: #eef3f8;
   cursor: zoom-in;
+}
+
+.gallery-feature {
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+}
+
+.gallery-feature img {
+  height: 250px;
 }
 
 .gallery figcaption {
@@ -688,8 +776,10 @@ h2 {
 }
 
 .lightbox img {
-  max-width: min(1200px, 96vw);
-  max-height: 82vh;
+  max-width: min(1480px, 96vw);
+  max-height: 86vh;
+  object-fit: contain;
+  background: #f4f7fb;
   border-radius: 10px;
   box-shadow: var(--shadow);
 }
@@ -718,6 +808,11 @@ h2 {
 .export-mode .gallery,
 .export-mode .module-block {
   display: none;
+}
+
+.report-mode .is-flagship .gallery,
+.export-mode .is-flagship .gallery {
+  display: grid;
 }
 
 .report-mode .key-shot,
@@ -787,6 +882,10 @@ h2 {
 
   .cover-form-grid {
     grid-template-columns: repeat(2, minmax(130px, 1fr));
+  }
+
+  .gallery-feature {
+    grid-template-columns: 1fr;
   }
 
   .top-nav {

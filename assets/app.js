@@ -1,7 +1,23 @@
 const systemsData = [
   {
+    title: "千寻智能体平台",
+    path: "千寻智能体平台",
+    flagship: true,
+    architecture: "architecture/千寻智能体平台.svg",
+    architectureNote: "按一次问答展开：企微或千寻 Web 进入，经统一认证和网关，再按意图进入 Skill、问数或知识库。",
+    images: [
+      { file: "千寻智能体平台/01-workbench.png", caption: "工作台：侧边栏按业务分组，直接进入智能体" },
+      { file: "千寻智能体平台/02-market-insight.png", caption: "市场洞察：先看用法说明，再进入流式对话" },
+      { file: "千寻智能体平台/03-menu.png", caption: "菜单管理：控制智能体与知识库入口是否开放" },
+      { file: "千寻智能体平台/04-roles.png", caption: "角色管理：按角色决定谁能看到哪些菜单" }
+    ],
+    modules: []
+  },
+  {
     title: "sso单点登录系统",
     path: "sso单点登录系统",
+    architecture: "architecture/sso单点登录系统.svg",
+    architectureNote: "各业务系统共用同一套登录。认证中心签发凭证，网关校验后把身份交给下游。",
     images: [
       "sso单点登录系统/ScreenShot_2026-04-09_132149_705.png",
       "sso单点登录系统/ScreenShot_2026-04-09_132229_427.png",
@@ -16,6 +32,8 @@ const systemsData = [
   {
     title: "产品销售系统",
     path: "产品销售系统",
+    architecture: "architecture/产品销售系统.svg",
+    architectureNote: "产品门户经统一认证和网关访问目录服务，支撑检索、分类、推荐和多语言展示。",
     images: [
       "产品销售系统/ScreenShot_2026-04-09_134406_693.png",
       "产品销售系统/ScreenShot_2026-04-09_134433_058.png",
@@ -28,6 +46,8 @@ const systemsData = [
   {
     title: "工具插件系统",
     path: "工具插件系统",
+    architecture: "architecture/工具插件系统.svg",
+    architectureNote: "文件与消息作为可复用能力，经统一认证和网关提供给各业务系统。",
     images: [],
     modules: [
       {
@@ -62,6 +82,8 @@ const systemsData = [
   {
     title: "智能访客系统",
     path: "智能访客系统",
+    architecture: "architecture/智能访客系统.svg",
+    architectureNote: "公众号预约和现场管理进入同一套访客服务，覆盖审核、考试、签到和历史记录。",
     images: [
       "智能访客系统/ScreenShot_2026-04-09_133625_104.png",
       "智能访客系统/ScreenShot_2026-04-09_133637_029.png",
@@ -81,6 +103,8 @@ const systemsData = [
   {
     title: "知识问答系统",
     path: "知识问答系统",
+    architecture: "architecture/知识问答系统.svg",
+    architectureNote: "问答与知识管理经统一认证和网关进入知识服务，先检索资料，再生成回答。",
     images: [
       "知识问答系统/ScreenShot_2026-04-09_134601_205.png",
       "知识问答系统/ScreenShot_2026-04-09_134616_119.png",
@@ -102,6 +126,8 @@ const systemsData = [
   {
     title: "设备管理系统",
     path: "设备管理系统",
+    architecture: "architecture/设备管理系统.svg",
+    architectureNote: "台账、价值分析和经营看板经统一认证和网关进入设备服务。",
     images: [
       "设备管理系统/ScreenShot_2026-04-09_132802_694.png",
       "设备管理系统/ScreenShot_2026-04-09_132814_913.png",
@@ -132,6 +158,10 @@ const systemsData = [
 ];
 
 const copyMap = {
+  千寻智能体平台: {
+    desc: "面向全员的企业智能体工作台。员工从企业微信或千寻网页进入同一套会话，按市场、财务、安全、知识库等分组唤起智能体，回答以流式方式返回。菜单和角色决定谁能使用哪些能力。",
+    features: ["企微与网页同一套智能体", "按业务分组唤起", "意图识别后分发", "Skill、问数与知识库", "菜单和角色控制可见范围"]
+  },
   sso单点登录系统: {
     desc: "提供统一身份认证、角色权限配置与系统级授权控制，降低多系统登录与权限管理成本。",
     features: ["统一登录入口", "角色权限管理", "菜单与按钮级授权", "组织级权限隔离"]
@@ -167,28 +197,30 @@ const copyMap = {
 };
 
 const valueMetrics = [
-  { value: "6+", label: "核心系统覆盖" },
-  { value: "70+", label: "关键页面截图" },
-  { value: "2", label: "通用插件能力中心" },
+  { value: "1", label: "千寻智能体工作台" },
+  { value: "7", label: "纳入汇报的系统" },
   { value: "1", label: "统一身份入口" },
-  { value: "100%", label: "静态可部署交付" }
+  { value: "2", label: "可复用的文件与消息能力" },
+  { value: "全覆盖", label: "每套系统均有架构图" }
 ];
 
 const relationModel = {
   core: "统一数字化平台",
   layers: [
-    { title: "底座能力层", tags: ["SSO单点登录", "权限管理", "组织角色体系"] },
+    { title: "底座能力层", tags: ["SSO单点登录", "API 网关", "组织与角色"] },
+    { title: "智能体层", tags: ["千寻 Web", "企业微信", "意图识别", "Skill / 问数 / 知识库"] },
     { title: "业务应用层", tags: ["产品销售", "设备管理", "智能访客", "知识问答"] },
     { title: "支撑服务层", tags: ["文件管理", "消息发送平台", "日志追踪"] }
   ],
-  flow: "统一身份认证 -> 业务应用协同 -> 插件服务复用 -> 数据沉淀与持续优化"
+  flow: "统一身份认证 → 网关转发 → 千寻与业务系统协同 → 文件和消息能力复用"
 };
 
 const timelineData = [
   { time: "阶段 1", title: "统一身份与权限体系建设", desc: "完成多系统统一登录与角色权限控制，建立平台账号治理基础。" },
   { time: "阶段 2", title: "核心业务系统接入", desc: "产品销售、设备管理、智能访客等系统完成平台化接入和联动。" },
   { time: "阶段 3", title: "知识与智能能力升级", desc: "上线知识问答与统计看板，形成检索增强与运营分析能力。" },
-  { time: "阶段 4", title: "工具插件复用与扩展", desc: "落地文件管理与消息发送平台，支撑业务快速扩展与低成本复用。" }
+  { time: "阶段 4", title: "工具插件复用与扩展", desc: "落地文件管理与消息发送平台，支撑业务快速扩展与低成本复用。" },
+  { time: "阶段 5", title: "千寻智能体工作台", desc: "企微与网页进入同一套智能体，按意图连接市场洞察、经营问数和知识库，并用菜单与角色管住可见范围。" }
 ];
 
 const REPORT_MODE_KEY = "project_intro_report_mode";
@@ -200,6 +232,10 @@ let exportModeButton = null;
 
 function slugify(input) {
   return input.toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+function imageFile(item) {
+  return typeof item === "string" ? item : item.file;
 }
 
 function imageUrl(relPath) {
@@ -229,9 +265,9 @@ function getAllImageCount(system) {
 }
 
 function getPrimaryImage(system) {
-  if (system.images.length > 0) return system.images[0];
+  if (system.images.length > 0) return imageFile(system.images[0]);
   for (const mod of system.modules) {
-    if (mod.images.length > 0) return mod.images[0];
+    if (mod.images.length > 0) return imageFile(mod.images[0]);
   }
   return null;
 }
@@ -290,12 +326,14 @@ function renderOverview() {
   systemsData.forEach((system) => {
     const card = document.createElement("article");
     card.className = "overview-card";
+    const cfg = copyMap[system.title];
     const imgCount = getAllImageCount(system);
-    const moduleLabel = system.modules.length > 0 ? `${system.modules.length} 个子模块` : "单模块系统";
+    card.classList.toggle("is-flagship", Boolean(system.flagship));
     card.innerHTML = `
+      <p class="overview-kicker">${system.flagship ? "重点汇报" : "业务系统"}</p>
       <h3>${system.title}</h3>
-      <p class="overview-meta">${moduleLabel}</p>
-      <p class="overview-meta">${imgCount} 张截图证据</p>
+      <p class="overview-desc">${cfg ? cfg.desc : ""}</p>
+      <p class="overview-meta">${imgCount} 张界面 · 含架构图</p>
     `;
     grid.appendChild(card);
   });
@@ -348,19 +386,38 @@ function renderFeatureList(features) {
   return wrap;
 }
 
-function renderGallery(images, titlePrefix) {
+function renderGallery(images, titlePrefix, featured) {
   const gallery = document.createElement("div");
-  gallery.className = "gallery";
-  images.forEach((imgPath, idx) => {
+  gallery.className = featured ? "gallery gallery-feature" : "gallery";
+  images.forEach((item, idx) => {
+    const file = imageFile(item);
+    const caption = typeof item === "object" && item.caption
+      ? item.caption
+      : `${titlePrefix} · 界面 ${idx + 1}`;
     const fig = document.createElement("figure");
-    const caption = `${titlePrefix} · 截图 ${idx + 1} · ${fileName(imgPath)}`;
     fig.innerHTML = `
-      <img src="${imageUrl(imgPath)}" alt="${caption}" data-caption="${caption}">
-      <figcaption title="${fileName(imgPath)}">${fileName(imgPath)}</figcaption>
+      <img src="${imageUrl(file)}" alt="${caption}" data-caption="${caption}">
+      <figcaption title="${fileName(file)}">${caption}</figcaption>
     `;
     gallery.appendChild(fig);
   });
   return gallery;
+}
+
+function renderArchitecture(system) {
+  if (!system.architecture) return null;
+  const caption = `${system.title}架构图`;
+  const figure = document.createElement("figure");
+  figure.className = "arch-panel";
+  figure.innerHTML = `
+    <div class="arch-head">
+      <h4>架构图</h4>
+      <span>点击放大</span>
+    </div>
+    <img src="${imageUrl(system.architecture)}" alt="${caption}" data-caption="${caption}">
+    <figcaption>${system.architectureNote || ""}</figcaption>
+  `;
+  return figure;
 }
 
 function renderSystems() {
@@ -369,7 +426,7 @@ function renderSystems() {
   systemsData.forEach((system) => {
     const cfg = copyMap[system.title] || { desc: "系统介绍待补充。", features: [] };
     const article = document.createElement("article");
-    article.className = "system-section";
+    article.className = system.flagship ? "system-section is-flagship" : "system-section";
     article.id = getSectionId(system);
 
     article.innerHTML = `
@@ -377,12 +434,16 @@ function renderSystems() {
         <div>
           <div class="section-title">
             <h3>${system.title}</h3>
-            <span class="badge">${getAllImageCount(system)} 张截图</span>
+            <span class="badge">${system.flagship ? "重点汇报" : `${getAllImageCount(system)} 张界面`}</span>
           </div>
           <p class="description">${cfg.desc}</p>
         </div>
       </div>
     `;
+
+    article.appendChild(renderFeatureList(cfg.features));
+    const architecture = renderArchitecture(system);
+    if (architecture) article.appendChild(architecture);
 
     const primaryImage = getPrimaryImage(system);
     if (primaryImage) {
@@ -395,10 +456,8 @@ function renderSystems() {
       article.appendChild(keyShot);
     }
 
-    article.appendChild(renderFeatureList(cfg.features));
-
     if (system.images.length > 0) {
-      article.appendChild(renderGallery(system.images, system.title));
+      article.appendChild(renderGallery(system.images, system.title, system.flagship));
     }
 
     if (system.modules.length > 0) {
@@ -429,7 +488,7 @@ function bindLightbox() {
   document.body.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof HTMLImageElement)) return;
-    if (!target.closest(".gallery")) return;
+    if (!target.closest(".gallery, .arch-panel, .key-shot")) return;
     lightboxImg.src = target.src;
     lightboxCaption.textContent = target.dataset.caption || target.alt || "";
     lightbox.classList.remove("hidden");
@@ -543,7 +602,7 @@ function bindCoverMeta() {
   }
 
   const defaults = {
-    project: "统一平台能力全景介绍",
+    project: "企业数字化平台与千寻智能体汇报",
     presenter: "项目团队",
     date: getTodayISO(),
     version: "v1.0"

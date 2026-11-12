@@ -63,6 +63,7 @@ nginx -t && nginx -s reload
 
 - **替换现有截图**：保持图片文件名不变，直接覆盖即可，页面会自动展示新图片内容。
 - **新增/删除系统或截图**：需要同步更新 `assets/app.js` 中 `systemsData` 的目录与图片列表。
+- **架构图**：放在 `images/architecture/`，并在对应系统的 `architecture` 字段中引用。千寻使用流程树状架构图，其余系统为分层架构图。
 - **修改文案**：在 `assets/app.js` 的 `copyMap` 中修改系统描述和能力点。
 
 ## 可扩展建议
