@@ -223,6 +223,8 @@ const timelineData = [
   { time: "阶段 5", title: "千寻智能体工作台", desc: "企微与网页进入同一套智能体，按意图连接市场洞察、经营问数和知识库，并用菜单与角色管住可见范围。" }
 ];
 
+const ACCESS_KEY = "121";
+const ACCESS_PASS_KEY = "project_intro_access_passed";
 const REPORT_MODE_KEY = "project_intro_report_mode";
 const EXPORT_MODE_KEY = "project_intro_export_mode";
 const COVER_META_KEY = "project_intro_cover_meta";
@@ -716,7 +718,40 @@ function bindExportMode() {
   }
 }
 
+function bindAccessGate() {
+  const gate = document.getElementById("accessGate");
+  const form = document.getElementById("accessForm");
+  const input = document.getElementById("accessKey");
+  const error = document.getElementById("accessError");
+  if (!(form instanceof HTMLFormElement) || !(input instanceof HTMLInputElement)) return;
+
+  const unlock = () => {
+    document.body.classList.remove("is-gated");
+    window.sessionStorage.setItem(ACCESS_PASS_KEY, "1");
+    if (gate) gate.setAttribute("aria-hidden", "true");
+  };
+
+  if (window.sessionStorage.getItem(ACCESS_PASS_KEY) === "1") {
+    unlock();
+    return;
+  }
+
+  window.setTimeout(() => input.focus(), 0);
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (input.value.trim() === ACCESS_KEY) {
+      if (error) error.hidden = true;
+      unlock();
+      return;
+    }
+    if (error) error.hidden = false;
+    input.select();
+  });
+}
+
 function bootstrap() {
+  bindAccessGate();
   renderNav();
   renderValue();
   renderOverview();

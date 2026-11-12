@@ -7,7 +7,20 @@
   <meta name="description" content="面向高层汇报的企业数字化平台介绍，涵盖千寻智能体、统一身份认证与各业务系统架构。">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body>
+<body class="is-gated">
+  <div id="accessGate" class="access-gate" role="dialog" aria-modal="true" aria-labelledby="accessGateTitle">
+    <form id="accessForm" class="access-card">
+      <p class="access-kicker">ACCESS KEY</p>
+      <h2 id="accessGateTitle">请输入访问密钥</h2>
+      <p class="access-hint">验证通过后可查看项目介绍。</p>
+      <label class="access-field">
+        访问密钥
+        <input id="accessKey" type="password" inputmode="numeric" autocomplete="off" maxlength="12" required>
+      </label>
+      <p id="accessError" class="access-error" hidden>密钥不正确，请重新输入</p>
+      <button type="submit" class="access-submit">进入</button>
+    </form>
+  </div>
   <header class="site-header" id="top">
     <div class="container header-top">
       <a href="#top" class="brand">项目介绍系统</a>

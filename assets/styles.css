@@ -31,6 +31,100 @@ body {
   margin: 0 auto;
 }
 
+body.is-gated {
+  overflow: hidden;
+}
+
+body.is-gated .site-header,
+body.is-gated main,
+body.is-gated .site-footer,
+body.is-gated .back-to-top {
+  display: none;
+}
+
+.access-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background:
+    radial-gradient(700px 280px at 80% 0%, rgba(212, 175, 95, 0.2), transparent 60%),
+    linear-gradient(160deg, #071426 0%, #10284f 55%, #163e66 100%);
+}
+
+body.is-gated .access-gate {
+  display: flex;
+}
+
+.access-card {
+  width: min(420px, 100%);
+  padding: 1.6rem 1.5rem 1.4rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.access-kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+}
+
+.access-card h2 {
+  margin: 0.35rem 0 0.4rem;
+  font-size: 1.45rem;
+  color: #10233f;
+}
+
+.access-hint {
+  margin: 0 0 1rem;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.access-field {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+  color: #31445f;
+}
+
+.access-field input {
+  height: 44px;
+  border: 1px solid #d5deea;
+  border-radius: 10px;
+  padding: 0 0.8rem;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+}
+
+.access-field input:focus {
+  outline: 2px solid rgba(29, 78, 137, 0.25);
+  border-color: #1d4e89;
+}
+
+.access-error {
+  margin: 0.65rem 0 0;
+  color: #b42318;
+  font-size: 0.86rem;
+}
+
+.access-submit {
+  margin-top: 0.9rem;
+  width: 100%;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: #10284f;
+  color: #f4e7c8;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -936,8 +1030,16 @@ h2 {
   .site-header,
   .back-to-top,
   .lightbox,
-  .hero-cta {
+  .hero-cta,
+  body.is-gated main,
+  body.is-gated .site-footer {
     display: none !important;
+  }
+
+  body.is-gated .access-gate {
+    display: flex !important;
+    position: static;
+    min-height: 100vh;
   }
 
   .cover-editor {
